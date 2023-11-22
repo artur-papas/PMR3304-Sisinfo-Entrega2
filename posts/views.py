@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from .models import Post
@@ -9,7 +9,7 @@ def list_posts(request):
     return render(request, 'posts/index.html', context)
 
 def detail_post(request, post_id):
-    post = Post.objects.get(pk=post_id)
+    post = get_object_or_404(Post, pk=post_id)
     context = {'post': post}
     return render(request, 'posts/detail.html', context)
 
@@ -27,5 +27,27 @@ def create_post(request):
     else:
         return render(request, 'posts/create.html', {})
 
+def update_post(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
 
+    if request.method == "POST":
+        post.title = request.POST['title']
+        post.publish_date = request.POST['publish_date']
+        post.content = request.POST['content']
+        post.save()
+        return HttpResponseRedirect(
+            reverse('posts:detail', args=(post.id, )))
+
+    context = {'post': post}
+    return render(request, 'posts/update.html', context)
+
+def delete_post(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+
+    if request.method == "POST":
+        post.delete()
+        return HttpResponseRedirect(reverse('posts:index'))
+
+    context = {'post': post}
+    return render(request, 'posts/delete.html', context)
 # Create your views here.
