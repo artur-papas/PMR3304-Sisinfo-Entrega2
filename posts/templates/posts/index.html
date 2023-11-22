@@ -13,7 +13,7 @@
   <article class="card">
     <a href="{% url 'posts:detail' post.id %}"
       >{{ post.title }}</a>
-    <p> {{ post.publish_date }}</p>
+    <p> {{ post.publish_date|date:"d/m/Y" }}</p>
     <div class="truncate">
         {{ post.content}}
     </div>
