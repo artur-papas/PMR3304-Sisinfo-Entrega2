@@ -8,5 +8,5 @@ class Post(models.Model):
     content = models.TextField(max_length=200, null=True)
 
     def __str__(self):
-        return f'{self.Title} ({self.publish_date})'
+        return f'{self.title} ({self.publish_date})'
 # Create your models here.

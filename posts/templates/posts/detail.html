@@ -4,7 +4,11 @@
 
 <h2>{{ post.title }}</h2>
 <h3>{{ post.publish_date|date:"d/m/Y" }}</h3>
-<p>{{ post.content|safe }}</p>
+
+{% autoescape off %}
+    <p>{{ post.content|linebreaks|safe }}</p>
+{% endautoescape %}
+
 <ul>
     <li><a href="{% url 'posts:update' post.id %}">Editar</a></li>
     <li><a href="{% url 'posts:delete' post.id %}">Apagar</a></li>
