@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from .models import Post
+from .forms import PostForm
 
 def list_posts(request):
     post_list = Post.objects.all()
@@ -15,30 +16,40 @@ def detail_post(request, post_id):
 
 def create_post(request):
     if request.method == 'POST':
-        post_title = request.POST['title']
-        post_publish_date = request.POST['publish_date']
-        post_content = request.POST['content']
-        post = Post(title=post_title,
-                      publish_date=post_publish_date,
-                      content=post_content)
-        post.save()
-        return HttpResponseRedirect(
-            reverse('posts:detail', args=(post.id, )))
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post_title = form.cleaned_data['title']
+            post_publish_date = form.cleaned_data['publish_date']
+            post_content = form.cleaned_data['content']
+            post = Post(title=post_title,
+                        publish_date=post_publish_date,
+                        content=post_content)
+            post.save()
+            return HttpResponseRedirect(
+                reverse('posts:detail', args=(post.id, )))
     else:
-        return render(request, 'posts/create.html', {})
+        form=PostForm
+    context={'form': form}
+    return render(request, 'posts/create.html', context)
 
 def update_post(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
 
     if request.method == "POST":
-        post.title = request.POST['title']
-        post.publish_date = request.POST['publish_date']
-        post.content = request.POST['content']
-        post.save()
-        return HttpResponseRedirect(
-            reverse('posts:detail', args=(post.id, )))
-
-    context = {'post': post}
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post.title = form.cleaned_data['title']
+            post.publish_date = form.cleaned_data['publish_date']
+            post.content = form.cleaned_data['content']
+            post.save()
+            return HttpResponseRedirect(reverse('posts:detail', args=(post.id, )))
+    else:
+        form = PostForm(
+            initial={'title': post.title,
+                'publish_date': post.publish_date,
+                'content': post.content
+            })
+    context = {'post': post, 'form': form}
     return render(request, 'posts/update.html', context)
 
 def delete_post(request, post_id):
