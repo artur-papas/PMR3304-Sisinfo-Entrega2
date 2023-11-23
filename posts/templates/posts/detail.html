@@ -15,6 +15,18 @@
 </ul>
 
 <hr>
+<h3>Categorias:</h3>
+{% if post.category_set.all %}
+<ul>
+    {% for category in post.category_set.all %}
+    <li><a href="{% url 'posts:category' category.id %}"
+        >{{ category.name }}</a></li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>Post não pertence a nenhuma categoria.</p>
+{% endif %}
+<hr>
 
 <section>
     <header>

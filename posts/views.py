@@ -1,7 +1,7 @@
 from multiprocessing import context
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.views import generic
-from .models import Post, Comment
+from .models import Post, Comment, Category
 from .forms import PostForm, CommentForm
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
@@ -65,3 +65,11 @@ def create_comment(request, post_id):
         form = CommentForm()
     context = {'form': form, 'post': post}
     return render(request, 'posts/comment.html', context)
+
+class CategoryListView(generic.ListView):
+    model = Category
+    template_name = 'posts/categories.html'
+
+class CategoryDetailView(generic.DetailView):
+    model = Category
+    template_name = 'posts/category.html'

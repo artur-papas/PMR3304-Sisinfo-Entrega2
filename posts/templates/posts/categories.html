@@ -1,0 +1,18 @@
+{% extends 'base.html' %} {% block content %}
+<h2>Categorias</h2>
+
+{% if category_list %}
+<section class="lista-de-cards">
+  {% for category in category_list %}
+  <article class="card">
+    <a href="{% url 'posts:category' category.id %}"
+      >{{ category.name }}</a>
+    <div class="truncate">
+        {{ category.description}}
+    </div>
+  </article>
+  {% endfor %}
+</section>
+{% else %}
+<p>Não foi encontrada nenhuma categoria.</p>
+{% endif %} {% endblock content %}

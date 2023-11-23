@@ -1,0 +1,19 @@
+{% extends 'base.html' %} {% block content %}
+<h2>Posts da Categoria "{{ category.name }}"</h2>
+
+{% if category.posts.all %}
+<section class="lista-de-cards">
+  {% for post in category.posts.all %}
+  <article class="card">
+    <a href="{% url 'posts:detail' post.id %}"
+      >{{ post.title }}</a>
+    <p> {{ post.publish_date|date:"d/m/Y" }}</p>
+    <div class="truncate">
+        {{ post.content}}
+    </div>
+  </article>
+  {% endfor %}
+</section>
+{% else %}
+<p>Não foi encontrado nenhum post.</p>
+{% endif %} {% endblock content %}
