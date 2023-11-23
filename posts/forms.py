@@ -25,12 +25,10 @@ class CommentForm(forms.ModelForm):
             'author',
             'text',
             'date',
-            'post',
         ]
         labels = {
             'author': 'Usuário',
             'text': 'Comentário',
             'date' : 'Data do comentário',
-            'post': 'Post Associado',
         }
         widgets = {'date': forms.DateInput(attrs={'type': 'date'})}
