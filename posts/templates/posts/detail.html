@@ -14,4 +14,30 @@
     <li><a href="{% url 'posts:delete' post.id %}">Apagar</a></li>
 </ul>
 
+<hr>
+
+<section>
+    <header>
+        <h3>Comentários</h3>
+    </header>
+    <ul>
+        {% if post.comment_set.all %}
+            {% for comment in comments %}
+                <figure>
+                    <p>{{ comment.author }} - {{comment.date|date:"d/m/Y" }}</p>
+                    <blockquote>
+                        "{{ comment.text }}"
+                    </blockquote>
+                </figure>
+            {% endfor %}
+        {% else %}
+            <p>Ainda não existe nenhum comentário para este post.</p>
+        {% endif %}
+    </ul>
+
+    <hr>
+
+    <a href="{% url 'posts:comment' post.pk %}"><button>Comente aqui</button></a>
+
+</section>
 {% endblock content %}
